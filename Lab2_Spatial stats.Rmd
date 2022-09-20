@@ -1,0 +1,118 @@
+---
+title: 'Geog 4/6300: Lab 3'
+output:
+  github_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(sf)
+library(tmap)
+```
+
+## Spatial statistics and visualization
+
+**Overview:**
+This lab has two main sections: mapping police reports and calculating crime rates/location quotients. Your answers to the lab questions should be typed in the relevant spaces below and pushed to your Github repo. 
+
+###Part 1: mapping the data and its distribution###
+The data folder has two files related to crime data for Spokane, Washington.  
+
+* “Spokane_crimes_all” has data for every crime committed in from 2000-2015. 
+
+* "Spokane_precincts" has precinct boundaries for the city of Spokane and its population from 2015. This is saved as a geojson file.
+
+In the first section of this lab, you'll load this data and analyze it using several metrics related to point pattern analysis.
+
+**Question 1:** _Load the crime reports (Spokane_crimes_all) file using read_csv. Then use st_read to import the precinct boundaries. Call the head of the Spokane_crimes_all file using kable when you are done._
+
+```{r}
+#Code goes here
+```
+
+**Question 2:** _Filter the data to include just arson, assault, and vehicle theft. Use group_by and summarise to calculate the mean centers for each type of offense. Then use ggplot and geom_point to plot these points on a graph, changing the color based on the offense._
+
+```{r}
+#Code goes here
+```
+
+**Question 3:** _Interpret how geographic differences between the mean centers you calculated are meaningful. What do they tell you about the locations of these crimes relative to one another?_
+
+{Your answer here.}
+
+**Question 4:** _Filter the crime reports so that it contains just murder as the offense type, and then use st_as_sf to convert these to spatial data. Using tmap, create a map that shows the location of all reports in the this data frame and the precinct boundaries. Also include a scale bar and north arrow. See class scripts for a model to work from._
+
+```{r}
+#Code goes here
+```
+
+**Question 5:** _The st_as_sf function has multiple parameters (such as `coords`). Briefly explain the purpose of each one you used for question 4._
+
+{Your response here.}
+
+###Part 2: Crime rates
+
+In the second section of this lab, you'll do a spatial join of points to precincts to identify the precinct ID of each reported crime. You'll then summarise these reports to create a crime rate for each precinct, which is usually reported as crime per 100,000 people.
+
+**Question 6:** _Link the crimes from 2012 to the precinct they were in. To do this, first filter the points to just 2012 and then match points to their precinct using a spatial join. Use st_as_sf to convert the crime reports to spatial data. Then use st_join to link precinct information to the crime reports. When that's done, remove the geometry column using st_set_geometry and then filter out any points that do not have a matching precinct. Call the head of this table using kable when you are done._
+
+```{r}
+#Code goes here.
+```
+
+**Question 7:** _Next, make a table of total police reports by offense type by precinct for this 2012 crime report data. Using group_by and summarise, grouping by precinct number, population, and offense type. Spread the data to wide format with the Offense types as column names and the count of reports as observations. Use kable to show the head of this table when done._
+
+```{r}
+#Code goes here
+```
+
+**Question 8:** _Select just the precinct number, population, and count of burglaries from the precincts data frame. Then calculate the *burglary rate*, dividing the crimes by the population and multiplying by 100,000. Create a histogram using ggplot showing the distribution of this new variable._ 
+
+```{r}
+#Code goes here
+```
+
+**Question 9:** _Use left_join to join the precinct boundaries and burglary rate data frame. Then use tmap to create a map of the burglary rate. Use style="jenks" in the tm_polygons function to use natural breaks classification. What's one geographic trend you see on this map?_
+
+```{r}
+#Code goes here
+```
+
+{Explanation goes here.}
+
+**Question 10:** _The burglary rate for the city of Spokane in 2012, according to this dataset, is 1,657 per 100,000 residents. Using this figure, calculate the location quotient for burglary in each precinct within the city. Which precincts have the highest and lowest location quotients? Interpret what this number tells you for each of these precincts._
+
+```{r}
+#Code goes here
+```
+
+{Response goes here.}
+
+**Question 11:** _How do you feel about the work you did on this lab? Was it easy, moderate, or hard? What were the biggest things you learned by completing it? How would you rate it low pass/pass/high pass)?_
+
+## Bonus question! Pick one of the below
+
+Option 1:
+The st_make_grid function in tmap allows you to create quadrats of varying sizes. Create a quadrat grid for Spokane using the precinct polygons that you think is of appropriate scale. See this walkthrough for how to do so: https://vialab.mit.edu/tutorials/module/mapping-in-r-street-trees-in-camberville/
+
+Following a similar process as you used in steps 6 and 7, count the burglary reports in each grid cell and map the results using tmap. Then write a short response that compares the map you made using quadrats to the one using precincts. Do they show similar spatial patterns? Why or why not? Which do you prefer? 
+
+```{r}
+#Code goes here
+```
+
+{Response goes here}
+
+
+Option 2: 
+The tm_facets function allows you to make small multiple maps with tmap. Pick four other listed offenses in the crime report data and create a dataset that joins the precinct boundaries to the counts of each offense by precinct. Note: this dataset will need to be in **long** format, so you will have four rows for each precinct. Then use tm_facets with tmap to create a single small multiples map showing the geographic distribution of each offense. Comment on any spatial patterns you see.
+
+Guide to using tm_facets: https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html#facets
+
+```{r}
+#Code goes here
+```
+
+{Response goes here}
+
